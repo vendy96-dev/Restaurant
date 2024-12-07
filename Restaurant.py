@@ -21,7 +21,8 @@ cursor_menu.execute("""
 CREATE TABLE IF NOT EXISTS menu (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     item TEXT NOT NULL,
-    price FLOAT NOT NULL);
+    price FLOAT NOT NULL,
+    currency TEXT NOT NULL);
 """)
 conn_menu.commit()
 
@@ -42,9 +43,8 @@ oldItemChoice = ""
 oldItemNumberOfOrders = 0
 
 
-print("Hello. Welcome to our coffee shop!")
 #Register
-account_exists = input('Do you have a registration? (Y)es, log me in or (N)o, let me create one:\n')
+account_exists = input('Hello. Welcome to our coffee shop!\nDo you have a registration? (Y)es, log me in or (N)o, let me create one:\n')
 if account_exists.lower() == 'n':
     new_username = input("Enter new username: ")
     new_password = input('Enter password: ')
@@ -53,8 +53,25 @@ if account_exists.lower() == 'n':
     cursor_users.execute(sql_insert_newUser, (new_username, new_password, new_name))
     conn_users.commit()
     print("User registered successfully.")
-    new_account = cursor_users.execute("SELECT * FROM users ORDER BY id DESC LIMIT 1;")
-    print(*new_account)
+    print("")
+    sql_insert_existingUser = "SELECT * FROM users WHERE username = ? AND password = ?"
+    cursor_users.execute(sql_insert_existingUser, (new_username, new_password))
+    print(f'Welcome, {cursor_users.fetchone()[3]}. Here is our menu: ')
+    cursor_menu.execute('''
+        INSERT INTO menu (item, price, currency) 
+        VALUES
+            ('water', '1', 'BGN'),
+            ('coffee', '0.8', 'BGN'),
+            ('tea', '0.5', 'BGN'),
+            ('beer', '1.5', 'BGN'),
+            ('soda', '1.2', 'BGN');
+        ''')
+    conn_menu.commit()
+    cursor_menu.execute('SELECT * from menu')
+    row = cursor_menu.fetchone()
+    while row:
+        print(*row)
+        row = cursor_menu.fetchone()
 
     #Configure orders...!!
 
@@ -63,15 +80,15 @@ elif account_exists.lower() == 'y':
     password = input("Enter password: ")
     sql_insert_existingUser = "SELECT * FROM users WHERE username = ? AND password = ?"
     cursor_users.execute(sql_insert_existingUser, (username, password))
-    print(f'Welcome, {cursor_users.fetchone()[3]}. Here is our menu: ')
+    print(f'Welcome, {cursor_users.fetchone()[3]}. What would you like to order?: ')
     cursor_menu.execute('''
-    INSERT INTO menu (item, price) 
+    INSERT INTO menu (item, price, currency) 
     VALUES
-        ('water', '1'),
-        ('coffee', '0.8'),
-        ('tea', '0.5'),
-        ('beer', '1.5'),
-        ('soda', '1.2');
+        ('water', '1', 'BGN'),
+        ('coffee', '0.8', 'BGN'),
+        ('tea', '0.5', 'BGN'),
+        ('beer', '1.5', 'BGN'),
+        ('soda', '1.2', 'BGN');
     ''')
     conn_menu.commit()
     cursor_menu.execute('SELECT * from menu')
@@ -79,8 +96,10 @@ elif account_exists.lower() == 'y':
     while row:
         print(*row)
         row = cursor_menu.fetchone()
-
+        
 #Continue with order
+    user_choice = input("Choice:\n")
+
     #order = input('What would you like to order?\n')
     # if order == "" or order.isdigit():
     #     print(Fore.RED + "Order must be a text and not be blank! Aborting...")
@@ -170,22 +189,10 @@ elif account_exists.lower() == 'y':
     # else:
     #     print(Fore.RED + "That is not a valid option! Aborting...")
     #     exit()
-input("Have a nice day! Press any key...")
+input("Have a nice day! Press enter key...")
 cursor_menu.execute('DROP TABLE menu')
 conn_menu.commit()
+#cursor_users.execute('DROP TABLE users')
+#conn_users.commit()
 conn_users.close()
 conn_menu.close()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
