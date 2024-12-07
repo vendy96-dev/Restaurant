@@ -96,15 +96,16 @@ elif account_exists.lower() == 'y':
     while row:
         print(*row)
         row = cursor_menu.fetchone()
-        
-#Continue with order
-    user_choice = input("Choice:\n")
 
-    #order = input('What would you like to order?\n')
-    # if order == "" or order.isdigit():
-    #     print(Fore.RED + "Order must be a text and not be blank! Aborting...")
-    #     exit()
-    # while order not in menu:
+#Continue with order
+    order = input("Choice (item or number of item):\n")
+    if order == "":
+        print(Fore.RED + "Order must not be blank! Aborting...")
+        exit()
+    if order.lower() == 'water' or order == 1:
+             price = 1
+#             total = price * float(oldItemNumberOfOrders).__round__(2)
+#             print(f'You chose {oldItemNumberOfOrders} {menu[0]}s. Your price is {total} BGN.')
     # #if order not in menu:
     #     addNew = input('We do not have that in our menu. Would you like to add it? (Y)es or (N)o:\n')
     #     if addNew.lower() == 'n':
