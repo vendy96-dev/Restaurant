@@ -1,0 +1,3 @@
+1. Add user interface with TKInter/CustomTKInter
+2. Add a history with orders in a separate DB and give the option to view history before ordering
+3. Fix inserting price for new items
