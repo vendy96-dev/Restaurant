@@ -18,3 +18,6 @@ Note - all the modules, along with python310.dll, database files and the icons a
      your order which will be calculated and displayed to the user in a message box, which asks if the user confirms the order;
     - order history - opens a window with a table with previous orders made
     - logout - logs out the user and opens up the home window
+
+The program can be started by extracting the build.zip file and running:
+build > exe.win-amd64-3.10 > Restaurant-to-build.exe
