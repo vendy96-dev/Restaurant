@@ -7,6 +7,8 @@ This application is built using Python, with the listed modules included:
 
 
 The application creates the local db files when you first start the application.
+Note - all the modules, along with python310.dll, database files and the icons are included into the build.
+
 
 1. Home window - has three buttons - login, register and exit
 2. Login window - allows the user to login or create a new account
@@ -16,6 +18,3 @@ The application creates the local db files when you first start the application.
      your order which will be calculated and displayed to the user in a message box, which asks if the user confirms the order;
     - order history - opens a window with a table with previous orders made
     - logout - logs out the user and opens up the home window
-
-Note - since python310.dll is not included in the build, you need to add it manually to the folder where the .exe file
-is located.
